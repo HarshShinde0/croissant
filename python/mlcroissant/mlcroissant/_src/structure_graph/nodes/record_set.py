@@ -17,6 +17,7 @@ from mlcroissant._src.core.uuid import uuid_from_jsonld
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.base_node import node_by_uuid
 from mlcroissant._src.structure_graph.nodes.field import Field
+from mlcroissant._src.structure_graph.nodes.geo import QuantitativeValue
 
 
 def json_from_jsonld(ctx: Context, data) -> Json | None:
@@ -36,6 +37,32 @@ class RecordSet(Node):
     """Nodes to describe a dataset RecordSet."""
 
     JSONLD_TYPE = constants.ML_COMMONS_RECORD_SET_TYPE
+
+    # Geo Properties
+    spatial_resolution: QuantitativeValue | str | dict | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        description="Nominal spatial resolution for the record/collection.",
+        input_types=[QuantitativeValue, SDO.Text, dict],
+        url=constants.ML_COMMONS_GEO_SPATIAL_RESOLUTION,
+    )
+    spatial_index: str | dict | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        description="Precomputed spatial index token(s).",
+        input_types=[SDO.Text, dict],
+        url=constants.ML_COMMONS_GEO_SPATIAL_INDEX,
+    )
+    temporal_resolution: QuantitativeValue | str | dict | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        description="Temporal cadence of the collection.",
+        input_types=[QuantitativeValue, SDO.Text, dict],
+        url=constants.ML_COMMONS_GEO_TEMPORAL_RESOLUTION,
+    )
+    time_series_index: Field | str | dict | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        description="Field used to order/index observations in a time series.",
+        input_types=[Field, SDO.Text, dict],
+        url=constants.ML_COMMONS_GEO_TIME_SERIES_INDEX,
+    )
 
     annotations: list[Field] = mlc_dataclasses.jsonld_field(
         cardinality="MANY",

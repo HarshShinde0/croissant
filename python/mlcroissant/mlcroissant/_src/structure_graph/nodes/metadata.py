@@ -33,6 +33,11 @@ from mlcroissant._src.structure_graph.nodes.file_set import FileSet
 from mlcroissant._src.structure_graph.nodes.organization import Organization
 from mlcroissant._src.structure_graph.nodes.person import Person
 from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
+from mlcroissant._src.structure_graph.nodes.geo import BandConfiguration
+from mlcroissant._src.structure_graph.nodes.geo import MultiWavelengthConfiguration
+from mlcroissant._src.structure_graph.nodes.geo import QuantitativeValue
+from mlcroissant._src.structure_graph.nodes.geo import SolarInstrumentCharacteristics
+from mlcroissant._src.structure_graph.nodes.geo import SpectralBand
 
 
 def _date_to_jsonld(ctx: Context, date: datetime.datetime | None) -> str | None:
@@ -50,6 +55,85 @@ def _dates_to_jsonld(
 @mlc_dataclasses.dataclass
 class Metadata(Node):
     """Nodes to describe a dataset metadata."""
+
+    # Geo Properties
+    coordinate_reference_system: str | dict | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        description="A coordinate reference system.",
+        input_types=[SDO.Text, dict],
+        url=constants.ML_COMMONS_GEO_COORDINATE_REFERENCE_SYSTEM,
+    )
+    spatial_resolution: QuantitativeValue | str | dict | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        description="Spatial resolution of the dataset.",
+        input_types=[QuantitativeValue, SDO.Text, dict],
+        url=constants.ML_COMMONS_GEO_SPATIAL_RESOLUTION,
+    )
+    band_configuration: BandConfiguration | str | dict | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        description="Configuration describing raster band organization.",
+        input_types=[BandConfiguration, SDO.Text, dict],
+        url=constants.ML_COMMONS_GEO_BAND_CONFIGURATION,
+    )
+    spectral_band_metadata: list[SpectralBand | str | dict] | None = mlc_dataclasses.jsonld_field(
+        cardinality="MANY",
+        default=None,
+        description="Per-band spectral metadata.",
+        input_types=[SpectralBand, SDO.Text, dict],
+        url=constants.ML_COMMONS_GEO_SPECTRAL_BAND_METADATA,
+    )
+    record_endpoint: str | dict | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        description="A service endpoint that provides programmatic access.",
+        input_types=[SDO.URL, SDO.Text, dict],
+        url=constants.ML_COMMONS_GEO_RECORD_ENDPOINT,
+    )
+    spatial_index: str | dict | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        description="Precomputed spatial index token(s).",
+        input_types=[SDO.Text, dict],
+        url=constants.ML_COMMONS_GEO_SPATIAL_INDEX,
+    )
+    spatial_bias: str | dict | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        description="Description of spatial representativeness limitations.",
+        input_types=[SDO.Text, dict],
+        url=constants.ML_COMMONS_GEO_SPATIAL_BIAS,
+    )
+    sampling_strategy: str | dict | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        description="Description of how samples were selected or constructed.",
+        input_types=[SDO.Text, dict],
+        url=constants.ML_COMMONS_GEO_SAMPLING_STRATEGY,
+    )
+    temporal_resolution: QuantitativeValue | str | dict | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        description="Temporal cadence of the dataset.",
+        input_types=[QuantitativeValue, SDO.Text, dict],
+        url=constants.ML_COMMONS_GEO_TEMPORAL_RESOLUTION,
+    )
+    multi_wavelength_configuration: MultiWavelengthConfiguration | str | dict | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        description="Composite property for multi-wavelength config.",
+        input_types=[MultiWavelengthConfiguration, SDO.Text, dict],
+        url=constants.ML_COMMONS_GEO_MULTI_WAVELENGTH_CONFIGURATION,
+    )
+    solar_instrument_characteristics: SolarInstrumentCharacteristics | str | dict | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        description="Composite property for solar instrument characteristics.",
+        input_types=[SolarInstrumentCharacteristics, SDO.Text, dict],
+        url=constants.ML_COMMONS_GEO_SOLAR_INSTRUMENT_CHARACTERISTICS,
+    )
+    spatial_coverage: dict | None = mlc_dataclasses.jsonld_field(
+        default=None,
+        description=(
+            "The geographic location(s) covered by the dataset. "
+            'Structure: {"@type": "Place", "geo": {"@type": "GeoShape", '
+            '"box": "minLat minLon maxLat maxLon"}}'
+        ),
+        from_jsonld=lambda ctx, v: v,
+        url=constants.SCHEMA_ORG_SPATIAL_COVERAGE,
+    )
 
     JSONLD_TYPE = constants.SCHEMA_ORG_DATASET
 
@@ -236,15 +320,13 @@ class Metadata(Node):
         input_types=[SDO.Text],
         url=constants.ML_COMMONS_RAI_DATA_COLLECTION_RAW_DATA,
     )
-    data_collection_timeframe: list[datetime.datetime] | None = (
-        mlc_dataclasses.jsonld_field(
-            cardinality="MANY",
-            cast_fn=cast_dates,
-            default=None,
-            input_types=[SDO.Date, SDO.DateTime],
-            to_jsonld=_dates_to_jsonld,
-            url=constants.ML_COMMONS_RAI_DATA_COLLECTION_TIME_FRAME,
-        )
+    data_collection_timeframe: list[datetime.datetime] | None = mlc_dataclasses.jsonld_field(
+        cardinality="MANY",
+        cast_fn=cast_dates,
+        default=None,
+        input_types=[SDO.Date, SDO.DateTime],
+        to_jsonld=_dates_to_jsonld,
+        url=constants.ML_COMMONS_RAI_DATA_COLLECTION_TIME_FRAME,
     )
     data_imputation_protocol: str | None = mlc_dataclasses.jsonld_field(
         cardinality="ONE",

@@ -111,5 +111,10 @@ class OptionalDependencies(object):
         """Cached tifffle module."""
         return _try_import("tifffile", package_name="Tifffile")
 
+    @cached_class_property
+    def rasterio(cls) -> types.ModuleType:
+        """Cached rasterio module."""
+        return _try_import("rasterio", package_name="rasterio")
+
 
 deps = OptionalDependencies

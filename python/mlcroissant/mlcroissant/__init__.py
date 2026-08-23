@@ -25,8 +25,14 @@ from mlcroissant._src.structure_graph.nodes.source import Extract
 from mlcroissant._src.structure_graph.nodes.source import FileProperty
 from mlcroissant._src.structure_graph.nodes.source import Source
 from mlcroissant._src.structure_graph.nodes.source import Transform
+from mlcroissant._src.structure_graph.nodes.geo import BandConfiguration
+from mlcroissant._src.structure_graph.nodes.geo import MultiWavelengthConfiguration
+from mlcroissant._src.structure_graph.nodes.geo import QuantitativeValue
+from mlcroissant._src.structure_graph.nodes.geo import SolarInstrumentCharacteristics
+from mlcroissant._src.structure_graph.nodes.geo import SpectralBand
 
 __all__ = [
+    "BandConfiguration",
     "constants",
     "Context",
     "CreativeWork",
@@ -41,14 +47,18 @@ __all__ = [
     "GenerationError",
     "Issues",
     "Metadata",
+    "MultiWavelengthConfiguration",
     "Node",
     "Organization",
     "Person",
+    "QuantitativeValue",
     "Rdf",
     "ReadFromCroissant",
     "Records",
     "RecordSet",
+    "SolarInstrumentCharacteristics",
     "Source",
+    "SpectralBand",
     "torch",
     "Transform",
     "ValidationError",

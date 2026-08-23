@@ -46,6 +46,8 @@ def _apply_transform_fn(value: Any, transform: Transform, field: Field) -> Any:
         source_regex = re.compile(transform.regex)
         if isinstance(value, pathlib.PurePath):
             value = os.fspath(value)
+        elif isinstance(value, bytes):
+            value = value.decode("utf-8")
         match = source_regex.match(value)
         if match is None:
             logging.warning(f"Could not match {source_regex} in {value}")
@@ -85,7 +87,9 @@ def apply_transforms_fn(value: Any, field: Field) -> Any:
 
 
 def _is_na(value: Any) -> bool:
-    return not isinstance(value, (list, np.ndarray)) and pd.isna(value)
+    if isinstance(value, (list, np.ndarray, pd.Series, pd.DataFrame)):
+        return False
+    return pd.isna(value)
 
 
 def _cast_value(ctx: Context, value: Any, data_type: type | term.URIRef | None):
@@ -95,21 +99,39 @@ def _cast_value(ctx: Context, value: Any, data_type: type | term.URIRef | None):
     elif data_type == DataType.IMAGE_OBJECT:
         if isinstance(value, deps.PIL_Image.Image):
             return value
+        elif "rasterio.io.DatasetReader" in str(type(value)):
+            return value
         elif isinstance(value, bytes):
             try:
                 return deps.PIL_Image.open(io.BytesIO(value))
             except (deps.PIL_Image.UnidentifiedImageError, OSError) as e:
+                # Try to use rasterio for complex TIFF images instead of raw numpy arrays
                 try:
-                    return deps.PIL_Image.fromarray(
-                        (deps.tifffile.imread(io.BytesIO(value)) * 255).astype("uint8")
-                    )
+                    memfile = deps.rasterio.MemoryFile(value)
+                    dataset = memfile.open()
+                    if dataset.count > 3:
+                        dataset._memfile = memfile  # Keep memory file alive to prevent GC segfault
+                        return dataset
+                    dataset.close()
+                except ModuleNotFoundError:
+                    pass
+                except Exception:
+                    pass
+
+                # Fallback to tifffile
+                try:
+                    img_array = deps.tifffile.imread(io.BytesIO(value))
+                    if img_array.ndim >= 3 and img_array.shape[-1] > 4:
+                        return img_array
+                    return deps.PIL_Image.fromarray((img_array * 255).astype("uint8"))
                 except ModuleNotFoundError:
                     raise NotImplementedError(
-                        "Missing dependency to read TIFF files. Pillow or tifffile"
-                        " is not installed. Please, install `pip install pillow"
-                        " tifffile`"
+                        "Missing dependency to read complex TIFF files. rasterio or tifffile"
+                        " is not installed. Please install them: `pip install pillow tifffile rasterio`"
                     )
                     raise e
+        elif isinstance(value, np.ndarray):
+            return value
         else:
             raise ValueError(f"Type {type(value)} is not accepted for an image.")
     elif data_type in [DataType.AUDIO_OBJECT, DataType.VIDEO_OBJECT]:

@@ -108,6 +108,30 @@ ML_COMMONS_RAI_DATA_SOCIAL_IMPACT = RAI.dataSocialImpact
 ML_COMMONS_RAI_PERSONAL_SENSITIVE_INFORMATION = RAI.personalSensitiveInformation
 ML_COMMONS_RAI_DATA_RELEASE_MAINTENANCE_PLAN = RAI.dataReleaseMaintenancePlan
 
+# Croissant GEO extension
+# V1.0 namespace
+GEO = rdflib.Namespace("http://mlcommons.org/croissant/geo/")
+# Attributes
+ML_COMMONS_GEO_COORDINATE_REFERENCE_SYSTEM = GEO.coordinateReferenceSystem
+ML_COMMONS_GEO_SPATIAL_RESOLUTION = GEO.spatialResolution
+ML_COMMONS_GEO_BAND_CONFIGURATION = GEO.bandConfiguration
+ML_COMMONS_GEO_SPECTRAL_BAND_METADATA = GEO.spectralBandMetadata
+ML_COMMONS_GEO_RECORD_ENDPOINT = GEO.recordEndpoint
+ML_COMMONS_GEO_SPATIAL_INDEX = GEO.spatialIndex
+ML_COMMONS_GEO_SPATIAL_BIAS = GEO.spatialBias
+ML_COMMONS_GEO_SAMPLING_STRATEGY = GEO.samplingStrategy
+ML_COMMONS_GEO_TEMPORAL_RESOLUTION = GEO.temporalResolution
+ML_COMMONS_GEO_TIME_SERIES_INDEX = GEO.timeSeriesIndex
+ML_COMMONS_GEO_MULTI_WAVELENGTH_CONFIGURATION = GEO.multiWavelengthConfiguration
+ML_COMMONS_GEO_SOLAR_INSTRUMENT_CHARACTERISTICS = GEO.solarInstrumentCharacteristics
+ML_COMMONS_GEO_TOTAL_BANDS = GEO.totalBands
+ML_COMMONS_GEO_BAND_NAMES_LIST = GEO.bandNamesList
+ML_COMMONS_GEO_CENTER_WAVELENGTH = GEO.centerWavelength
+ML_COMMONS_GEO_BANDWIDTH = GEO.bandwidth
+ML_COMMONS_GEO_CHANNEL_LIST = GEO.channelList
+ML_COMMONS_GEO_OBSERVATORY = GEO.observatory
+ML_COMMONS_GEO_INSTRUMENT = GEO.instrument
+
 # RDF standard URIs.
 # For "@type" key:
 RDF_TYPE = namespace.RDF.type
@@ -150,9 +174,12 @@ SCHEMA_ORG_NAME = namespace.SDO.name
 SCHEMA_ORG_PUBLISHER = namespace.SDO.publisher
 SCHEMA_ORG_SAME_AS = namespace.SDO.sameAs
 SCHEMA_ORG_SHA256 = namespace.SDO.sha256
+SCHEMA_ORG_SPATIAL_COVERAGE = namespace.SDO.spatialCoverage
 SCHEMA_ORG_URL = namespace.SDO.url
 SCHEMA_ORG_VALUE = namespace.SDO.value
 SCHEMA_ORG_VERSION = namespace.SDO.version
+SCHEMA_ORG_QUANTITATIVE_VALUE = namespace.SDO.QuantitativeValue
+SCHEMA_ORG_UNIT_TEXT = namespace.SDO.unitText
 
 # Schema.org URIs that do not exist yet in the standard.
 SCHEMA_ORG = rdflib.Namespace("https://schema.org/")

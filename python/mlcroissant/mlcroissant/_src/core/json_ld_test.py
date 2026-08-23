@@ -37,6 +37,7 @@ def test_make_context():
         "conformsTo": "dct:conformsTo",
         "cr": "http://mlcommons.org/croissant/",
         "rai": "http://mlcommons.org/croissant/RAI/",
+        "geocr": "http://mlcommons.org/croissant/geo/",
         "data": {"@id": "cr:data", "@type": "@json"},
         "dataType": {"@id": "cr:dataType", "@type": "@vocab"},
         "dct": "http://purl.org/dc/terms/",

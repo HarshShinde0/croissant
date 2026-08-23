@@ -192,6 +192,7 @@ def jsonld_fields(cls_or_instance) -> Iterator[JsonldField]:
                 continue
         metadata = cast(Metadata, field.metadata)
         if metadata:
+            _check_types(cls_or_instance, field, metadata)
             yield JsonldField(
                 default=field.default,
                 default_factory=field.default_factory,
@@ -205,12 +206,7 @@ def jsonld_fields(cls_or_instance) -> Iterator[JsonldField]:
 )  # pytype: disable=not-supported-yet
 def dataclass(cls):
     """Overloads the built-in dataclass with JsonldFields instead of Fields."""
-    cls = dataclasses.dataclass(eq=False, repr=False)(cls)
-    for field in dataclasses.fields(cls):
-        metadata = cast(Metadata, field.metadata)
-        if metadata:
-            _check_types(cls, field, metadata)
-    return cls
+    return dataclasses.dataclass(eq=False, repr=False)(cls)
 
 
 def _check_types(cls_or_instance, field: dataclasses.Field, metadata: Metadata) -> None:
@@ -247,8 +243,7 @@ def _check_types(cls_or_instance, field: dataclasses.Field, metadata: Metadata) 
     if cast_fn:
         # The field defines cast_fn: we check that Python type == cast_fn output type.
         signature = inspect.signature(cast_fn)
-        cast_fn_name = getattr(cast_fn, "__name__", cast_fn)
-        name = f"{field_name} with cast_fn={cast_fn_name}"
+        name = f"{field_name} with cast_fn={cast_fn.__name__}"
         _types_are_equal(name, field.type, signature.return_annotation)
     else:
         # Python type == expected JSON-LD type.

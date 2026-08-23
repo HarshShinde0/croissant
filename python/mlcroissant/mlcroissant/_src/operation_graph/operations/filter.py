@@ -25,9 +25,13 @@ def match_path(patterns: list[str] | None, path: pathlib.PurePath) -> bool:
     """Returns True if at least one pattern matches path."""
     if not patterns:
         return True
+    # Normalize path separators to forward slashes for cross-platform
+    # compatibility. fnmatch.translate() generates regex with '/' separators,
+    # but on Windows os.fspath() returns backslashes, causing mismatches.
+    path_str = os.fspath(path).replace("\\", "/")
     for pattern in patterns:
         regex = _memoized_regex(pattern)
-        if regex.match(os.fspath(path)):
+        if regex.match(path_str):
             return True
     return False
 

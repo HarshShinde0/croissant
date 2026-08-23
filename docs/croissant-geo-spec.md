@@ -173,7 +173,8 @@ Sample GeoCroissant Metadata for the HLS Burn Scars GeoAI-ready dataset (Hugging
     "containedIn": "cr:containedIn",
     "references": "cr:references",
     "key": "cr:key",
-    "arrayShape": "cr:arrayShape"
+    "arrayShape": "cr:arrayShape",
+    "isArray": "cr:isArray"
   },
   "@type": "Dataset",
   "name": "GeoCroissant Example: HLS Burn Scars",
@@ -202,7 +203,7 @@ Sample GeoCroissant Metadata for the HLS Burn Scars GeoAI-ready dataset (Hugging
   "geocr:bandConfiguration": {
     "@type": "geocr:BandConfiguration",
     "geocr:totalBands": 6,
-    "geocr:bandNameList": ["Blue", "Green", "Red", "NIR", "SW1", "SW2"]
+    "geocr:bandNamesList": ["Blue", "Green", "Red", "NIR", "SW1", "SW2"]
   },
 
   "geocr:spectralBandMetadata": [
@@ -253,12 +254,13 @@ Sample GeoCroissant Metadata for the HLS Burn Scars GeoAI-ready dataset (Hugging
             "fileSet": { "@id": "images" },
             "extract": { "fileProperty": "content" }
           },
-          "arrayShape": [512, 512, 6],
+          "isArray": true,
+          "arrayShape": "512,512,6",
 
           "geocr:bandConfiguration": {
             "@type": "geocr:BandConfiguration",
             "geocr:totalBands": 6,
-            "geocr:bandNameList": ["Blue", "Green", "Red", "NIR", "SW1", "SW2"]
+            "geocr:bandNamesList": ["Blue", "Green", "Red", "NIR", "SW1", "SW2"]
           },
           "geocr:spectralBandMetadata": [
             {
@@ -286,12 +288,13 @@ Sample GeoCroissant Metadata for the HLS Burn Scars GeoAI-ready dataset (Hugging
             "fileSet": { "@id": "masks" },
             "extract": { "fileProperty": "content" }
           },
-          "arrayShape": [512, 512, 1],
+          "isArray": true,
+          "arrayShape": "512,512,1",
 
           "geocr:bandConfiguration": {
             "@type": "geocr:BandConfiguration",
             "geocr:totalBands": 1,
-            "geocr:bandNameList": ["mask"]
+            "geocr:bandNamesList": ["mask"]
           }
         }
       ]
@@ -447,7 +450,7 @@ Example: Dataset-level
   "geocr:bandConfiguration": {
     "@type": "geocr:BandConfiguration",
     "geocr:totalBands": 6,
-    "geocr:bandNameList": ["Blue", "Green", "Red", "NIR", "SW1", "SW2"]
+    "geocr:bandNamesList": ["Blue", "Green", "Red", "NIR", "SW1", "SW2"]
   }
 }
 ```
@@ -472,7 +475,7 @@ Example: Data-level
           "geocr:bandConfiguration": {
             "@type": "geocr:BandConfiguration",
             "geocr:totalBands": 6,
-            "geocr:bandNameList": ["Blue", "Green", "Red", "NIR", "SW1", "SW2"]
+            "geocr:bandNamesList": ["Blue", "Green", "Red", "NIR", "SW1", "SW2"]
           }
         },
         {
@@ -483,7 +486,7 @@ Example: Data-level
           "geocr:bandConfiguration": {
             "@type": "geocr:BandConfiguration",
             "geocr:totalBands": 1,
-            "geocr:bandNameList": ["mask"]
+            "geocr:bandNamesList": ["mask"]
           }
         }
       ]
@@ -501,14 +504,14 @@ Cardinality: ONE
 
 Example: `"geocr:totalBands": 6`
 
-**`geocr:bandNameList`**\
+**`geocr:bandNamesList`**\
 Ordered list of band names corresponding to the raster band stack.\
 Expected data type: `sc:Text`\
 Domain: `geocr:BandConfiguration`\
 Range: `sc:Text`\
 Cardinality: MANY
 
-Example: `"geocr:bandNameList": ["Blue", "Green", "Red", "NIR", "SW1", "SW2"]`
+Example: `"geocr:bandNamesList": ["Blue", "Green", "Red", "NIR", "SW1", "SW2"]`
 
 **`geocr:spectralBandMetadata`**\
 Per-band spectral descriptors (e.g., center wavelength, bandwidth), enabling interoperable description of EO spectral characteristics. Applicable when downstream users/models require band physics/semantics beyond names alone.\
@@ -723,7 +726,8 @@ Example: Dataset-level
           "@id": "timeseries_recordset/image",
           "name": "image",
           "dataType": "sc:ImageObject",
-          "cr:arrayShape": [512, 512, 6]
+          "cr:isArray": true,
+          "cr:arrayShape": "512,512,6"
         }
       ]
     }
@@ -868,7 +872,10 @@ Below is an example JSON response from a `/records` endpoint showing how GeoCroi
     "citeAs": "cr:citeAs",
     "recordSet": "cr:recordSet",
     "field": "cr:field",
-    "dataType": { "@id": "cr:dataType", "@type": "@vocab" },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
     "source": "cr:source",
     "extract": "cr:extract",
     "fileSet": "cr:fileSet",
@@ -877,7 +884,11 @@ Below is an example JSON response from a `/records` endpoint showing how GeoCroi
     "containedIn": "cr:containedIn",
     "references": "cr:references",
     "key": "cr:key",
-    "arrayShape": "cr:arrayShape"
+    "arrayShape": "cr:arrayShape",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    }
   },
   "@type": "Dataset",
   "name": "GeoCroissant Example: Programmatic Metadata Access",
@@ -890,9 +901,7 @@ Below is an example JSON response from a `/records` endpoint showing how GeoCroi
   ],
   "citeAs": "https://doi.org/10.0000/example-doi",
   "license": "https://creativecommons.org/licenses/by/4.0/",
-
   "geocr:recordEndpoint": "https://example.org/api/records",
-
   "spatialCoverage": {
     "@type": "Place",
     "geo": {
@@ -901,16 +910,21 @@ Below is an example JSON response from a `/records` endpoint showing how GeoCroi
     }
   },
   "temporalCoverage": "2018-01-01/2021-12-31",
-  "geocr:spatialResolution": { "@type": "QuantitativeValue", "value": 30, "unitText": "m" },
+  "geocr:spatialResolution": {
+    "@type": "QuantitativeValue",
+    "value": 30,
+    "unitText": "m"
+  },
   "geocr:coordinateReferenceSystem": "EPSG:4326",
-
   "recordSet": [
     {
       "@type": "cr:RecordSet",
       "@id": "records_recordset",
       "name": "Records",
       "description": "Illustrative record-level metadata that may be retrieved from geocr:recordEndpoint (e.g., using bbox/datetime filters).",
-      "key": { "@id": "records_recordset/recordId" },
+      "key": {
+        "@id": "records_recordset/recordId"
+      },
       "field": [
         {
           "@type": "cr:Field",
@@ -922,8 +936,8 @@ Below is an example JSON response from a `/records` endpoint showing how GeoCroi
           "@type": "cr:Field",
           "@id": "records_recordset/spatialCoverage",
           "name": "spatialCoverage",
-          "description": "Record footprint or bounding region expressed using schema.org spatialCoverage.",
-          "dataType": "sc:Place"
+          "description": "Record footprint bounding box [minLon, minLat, maxLon, maxLat].",
+          "dataType": "cr:BoundingBox"
         },
         {
           "@type": "cr:Field",
@@ -935,9 +949,9 @@ Below is an example JSON response from a `/records` endpoint showing how GeoCroi
         {
           "@type": "cr:Field",
           "@id": "records_recordset/spatialResolution",
-          "name": "geocr:spatialResolution",
-          "description": "Record-level spatial resolution when it varies across records.",
-          "dataType": "sc:QuantitativeValue"
+          "name": "spatialResolution",
+          "description": "Record-level spatial resolution in meters when it varies across records.",
+          "dataType": "sc:Float"
         },
         {
           "@type": "cr:Field",
@@ -950,19 +964,20 @@ Below is an example JSON response from a `/records` endpoint showing how GeoCroi
       "data": [
         {
           "records_recordset/recordId": "rec-001",
-          "records_recordset/spatialCoverage": {
-            "@type": "Place",
-            "geo": { "@type": "GeoShape", "box": "33.0 -118.5 34.0 -117.0" }
-          },
+          "records_recordset/spatialCoverage": [
+            -118.5,
+            33.0,
+            -117.0,
+            34.0
+          ],
           "records_recordset/temporalCoverage": "2019-06-01/2019-06-30",
-          "records_recordset/spatialResolution": { "@type": "QuantitativeValue", "value": 30, "unitText": "m" },
+          "records_recordset/spatialResolution": 30,
           "records_recordset/spatialIndex": "h3:8a2a1072b59fff"
         }
       ]
     }
   ]
-}
-```
+}```
 
 ### **Key Properties in Use:**
 
@@ -1182,7 +1197,8 @@ RAI fields such as `rai:dataCollection`, `rai:dataCollectionType`, `rai:dataUseC
             "fileSet": { "@id": "images" },
             "extract": { "fileProperty": "content" }
           },
-          "cr:arrayShape": [512, 512, 6]
+          "cr:isArray": true,
+          "cr:arrayShape": "512,512,6"
         }
       ]
     },
@@ -1202,7 +1218,8 @@ RAI fields such as `rai:dataCollection`, `rai:dataCollectionType`, `rai:dataUseC
             "fileSet": { "@id": "masks" },
             "extract": { "fileProperty": "content" }
           },
-          "cr:arrayShape": [512, 512, 1]
+          "cr:isArray": true,
+          "cr:arrayShape": "512,512,1"
         }
       ]
     }
@@ -1300,7 +1317,8 @@ Below is an illustrative example showing how GeoCroissant can represent time-ser
             "fileSet": { "@id": "timeseries_images" },
             "extract": { "fileProperty": "content" }
           },
-          "cr:arrayShape": [3660, 3660, 13]
+          "cr:isArray": true,
+          "cr:arrayShape": "3660,3660,13"
         }
       ]
     }

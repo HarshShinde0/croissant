@@ -3,7 +3,7 @@
 # https://packaging.python.org/en/latest/specifications/declaring-project-metadata
 name = "mlcroissant"
 description = "MLCommons datasets format."
-version = "1.1.0"
+version = "1.0.22"
 authors = [
   { name = "Costanza Conforti" },
   { name = "Joaquin Vanschoren" },
@@ -22,7 +22,6 @@ authors = [
 dependencies = [
   "absl-py",
   "etils[epath]>=1.7.0",
-  "jinja2",
   "jsonpath-rw",
   "networkx",
   "pandas",
@@ -45,9 +44,7 @@ documentation = "https://mlcommons.org/working-groups/data/croissant/"
 # Installed through `pip install -e .[dev]`
 dev = [
   "black==23.11.0",
-  "csscompressor",
   "flake8-docstrings",
-  "jsmin",
   "mlcroissant[audio]",
   "mlcroissant[beam]",
   "mlcroissant[git]",
