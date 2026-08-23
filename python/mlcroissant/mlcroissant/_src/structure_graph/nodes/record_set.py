@@ -39,11 +39,13 @@ class RecordSet(Node):
     JSONLD_TYPE = constants.ML_COMMONS_RECORD_SET_TYPE
 
     # Geo Properties
-    spatial_resolution: QuantitativeValue | str | dict | None = mlc_dataclasses.jsonld_field(
-        default=None,
-        description="Nominal spatial resolution for the record/collection.",
-        input_types=[QuantitativeValue, SDO.Text, dict],
-        url=constants.ML_COMMONS_GEO_SPATIAL_RESOLUTION,
+    spatial_resolution: QuantitativeValue | str | dict | None = (
+        mlc_dataclasses.jsonld_field(
+            default=None,
+            description="Nominal spatial resolution for the record/collection.",
+            input_types=[QuantitativeValue, SDO.Text, dict],
+            url=constants.ML_COMMONS_GEO_SPATIAL_RESOLUTION,
+        )
     )
     spatial_index: str | dict | None = mlc_dataclasses.jsonld_field(
         default=None,
@@ -51,11 +53,13 @@ class RecordSet(Node):
         input_types=[SDO.Text, dict],
         url=constants.ML_COMMONS_GEO_SPATIAL_INDEX,
     )
-    temporal_resolution: QuantitativeValue | str | dict | None = mlc_dataclasses.jsonld_field(
-        default=None,
-        description="Temporal cadence of the collection.",
-        input_types=[QuantitativeValue, SDO.Text, dict],
-        url=constants.ML_COMMONS_GEO_TEMPORAL_RESOLUTION,
+    temporal_resolution: QuantitativeValue | str | dict | None = (
+        mlc_dataclasses.jsonld_field(
+            default=None,
+            description="Temporal cadence of the collection.",
+            input_types=[QuantitativeValue, SDO.Text, dict],
+            url=constants.ML_COMMONS_GEO_TEMPORAL_RESOLUTION,
+        )
     )
     time_series_index: Field | str | dict | None = mlc_dataclasses.jsonld_field(
         default=None,

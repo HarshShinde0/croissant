@@ -110,7 +110,9 @@ def _cast_value(ctx: Context, value: Any, data_type: type | term.URIRef | None):
                     memfile = deps.rasterio.MemoryFile(value)
                     dataset = memfile.open()
                     if dataset.count > 3:
-                        dataset._memfile = memfile  # Keep memory file alive to prevent GC segfault
+                        dataset._memfile = (
+                            memfile  # Keep memory file alive to prevent GC segfault
+                        )
                         return dataset
                     dataset.close()
                 except ModuleNotFoundError:
@@ -126,8 +128,9 @@ def _cast_value(ctx: Context, value: Any, data_type: type | term.URIRef | None):
                     return deps.PIL_Image.fromarray((img_array * 255).astype("uint8"))
                 except ModuleNotFoundError:
                     raise NotImplementedError(
-                        "Missing dependency to read complex TIFF files. rasterio or tifffile"
-                        " is not installed. Please install them: `pip install pillow tifffile rasterio`"
+                        "Missing dependency to read complex TIFF files. rasterio or"
+                        " tifffile is not installed. Please install them: `pip install"
+                        " pillow tifffile rasterio`"
                     )
                     raise e
         elif isinstance(value, np.ndarray):

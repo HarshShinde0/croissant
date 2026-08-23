@@ -15,9 +15,9 @@ from mlcroissant._src.core.data_types import data_types_to_jsonld
 from mlcroissant._src.core.data_types import EXPECTED_DATA_TYPES
 from mlcroissant._src.structure_graph.base_node import Node
 from mlcroissant._src.structure_graph.base_node import node_by_uuid
-from mlcroissant._src.structure_graph.nodes.source import Source
 from mlcroissant._src.structure_graph.nodes.geo import BandConfiguration
 from mlcroissant._src.structure_graph.nodes.geo import SpectralBand
+from mlcroissant._src.structure_graph.nodes.source import Source
 
 
 @mlc_dataclasses.dataclass
@@ -45,18 +45,22 @@ class Field(Node):
     JSONLD_TYPE = constants.ML_COMMONS_FIELD_TYPE
 
     # Geo Properties
-    band_configuration: BandConfiguration | str | dict | None = mlc_dataclasses.jsonld_field(
-        default=None,
-        description="Configuration of spatial/spectral bands.",
-        input_types=[BandConfiguration, SDO.Text, dict],
-        url=constants.ML_COMMONS_GEO_BAND_CONFIGURATION,
+    band_configuration: BandConfiguration | str | dict | None = (
+        mlc_dataclasses.jsonld_field(
+            default=None,
+            description="Configuration of spatial/spectral bands.",
+            input_types=[BandConfiguration, SDO.Text, dict],
+            url=constants.ML_COMMONS_GEO_BAND_CONFIGURATION,
+        )
     )
-    spectral_band_metadata: list[SpectralBand | str | dict] | None = mlc_dataclasses.jsonld_field(
-        cardinality="MANY",
-        default=None,
-        description="Per-band spectral metadata.",
-        input_types=[SpectralBand, SDO.Text, dict],
-        url=constants.ML_COMMONS_GEO_SPECTRAL_BAND_METADATA,
+    spectral_band_metadata: list[SpectralBand | str | dict] | None = (
+        mlc_dataclasses.jsonld_field(
+            cardinality="MANY",
+            default=None,
+            description="Per-band spectral metadata.",
+            input_types=[SpectralBand, SDO.Text, dict],
+            url=constants.ML_COMMONS_GEO_SPECTRAL_BAND_METADATA,
+        )
     )
 
     annotations: list[Self] = mlc_dataclasses.jsonld_field(

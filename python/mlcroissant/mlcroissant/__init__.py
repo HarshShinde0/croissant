@@ -17,6 +17,11 @@ from mlcroissant._src.structure_graph.nodes.creative_work import CreativeWork
 from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.structure_graph.nodes.file_set import FileSet
+from mlcroissant._src.structure_graph.nodes.geo import BandConfiguration
+from mlcroissant._src.structure_graph.nodes.geo import MultiWavelengthConfiguration
+from mlcroissant._src.structure_graph.nodes.geo import QuantitativeValue
+from mlcroissant._src.structure_graph.nodes.geo import SolarInstrumentCharacteristics
+from mlcroissant._src.structure_graph.nodes.geo import SpectralBand
 from mlcroissant._src.structure_graph.nodes.metadata import Metadata
 from mlcroissant._src.structure_graph.nodes.organization import Organization
 from mlcroissant._src.structure_graph.nodes.person import Person
@@ -25,11 +30,6 @@ from mlcroissant._src.structure_graph.nodes.source import Extract
 from mlcroissant._src.structure_graph.nodes.source import FileProperty
 from mlcroissant._src.structure_graph.nodes.source import Source
 from mlcroissant._src.structure_graph.nodes.source import Transform
-from mlcroissant._src.structure_graph.nodes.geo import BandConfiguration
-from mlcroissant._src.structure_graph.nodes.geo import MultiWavelengthConfiguration
-from mlcroissant._src.structure_graph.nodes.geo import QuantitativeValue
-from mlcroissant._src.structure_graph.nodes.geo import SolarInstrumentCharacteristics
-from mlcroissant._src.structure_graph.nodes.geo import SpectralBand
 
 __all__ = [
     "BandConfiguration",

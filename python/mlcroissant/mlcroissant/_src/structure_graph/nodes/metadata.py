@@ -30,14 +30,14 @@ from mlcroissant._src.structure_graph.nodes.creative_work import CreativeWork
 from mlcroissant._src.structure_graph.nodes.field import Field
 from mlcroissant._src.structure_graph.nodes.file_object import FileObject
 from mlcroissant._src.structure_graph.nodes.file_set import FileSet
-from mlcroissant._src.structure_graph.nodes.organization import Organization
-from mlcroissant._src.structure_graph.nodes.person import Person
-from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 from mlcroissant._src.structure_graph.nodes.geo import BandConfiguration
 from mlcroissant._src.structure_graph.nodes.geo import MultiWavelengthConfiguration
 from mlcroissant._src.structure_graph.nodes.geo import QuantitativeValue
 from mlcroissant._src.structure_graph.nodes.geo import SolarInstrumentCharacteristics
 from mlcroissant._src.structure_graph.nodes.geo import SpectralBand
+from mlcroissant._src.structure_graph.nodes.organization import Organization
+from mlcroissant._src.structure_graph.nodes.person import Person
+from mlcroissant._src.structure_graph.nodes.record_set import RecordSet
 
 
 def _date_to_jsonld(ctx: Context, date: datetime.datetime | None) -> str | None:
@@ -63,24 +63,30 @@ class Metadata(Node):
         input_types=[SDO.Text, dict],
         url=constants.ML_COMMONS_GEO_COORDINATE_REFERENCE_SYSTEM,
     )
-    spatial_resolution: QuantitativeValue | str | dict | None = mlc_dataclasses.jsonld_field(
-        default=None,
-        description="Spatial resolution of the dataset.",
-        input_types=[QuantitativeValue, SDO.Text, dict],
-        url=constants.ML_COMMONS_GEO_SPATIAL_RESOLUTION,
+    spatial_resolution: QuantitativeValue | str | dict | None = (
+        mlc_dataclasses.jsonld_field(
+            default=None,
+            description="Spatial resolution of the dataset.",
+            input_types=[QuantitativeValue, SDO.Text, dict],
+            url=constants.ML_COMMONS_GEO_SPATIAL_RESOLUTION,
+        )
     )
-    band_configuration: BandConfiguration | str | dict | None = mlc_dataclasses.jsonld_field(
-        default=None,
-        description="Configuration describing raster band organization.",
-        input_types=[BandConfiguration, SDO.Text, dict],
-        url=constants.ML_COMMONS_GEO_BAND_CONFIGURATION,
+    band_configuration: BandConfiguration | str | dict | None = (
+        mlc_dataclasses.jsonld_field(
+            default=None,
+            description="Configuration describing raster band organization.",
+            input_types=[BandConfiguration, SDO.Text, dict],
+            url=constants.ML_COMMONS_GEO_BAND_CONFIGURATION,
+        )
     )
-    spectral_band_metadata: list[SpectralBand | str | dict] | None = mlc_dataclasses.jsonld_field(
-        cardinality="MANY",
-        default=None,
-        description="Per-band spectral metadata.",
-        input_types=[SpectralBand, SDO.Text, dict],
-        url=constants.ML_COMMONS_GEO_SPECTRAL_BAND_METADATA,
+    spectral_band_metadata: list[SpectralBand | str | dict] | None = (
+        mlc_dataclasses.jsonld_field(
+            cardinality="MANY",
+            default=None,
+            description="Per-band spectral metadata.",
+            input_types=[SpectralBand, SDO.Text, dict],
+            url=constants.ML_COMMONS_GEO_SPECTRAL_BAND_METADATA,
+        )
     )
     record_endpoint: str | dict | None = mlc_dataclasses.jsonld_field(
         default=None,
@@ -106,19 +112,25 @@ class Metadata(Node):
         input_types=[SDO.Text, dict],
         url=constants.ML_COMMONS_GEO_SAMPLING_STRATEGY,
     )
-    temporal_resolution: QuantitativeValue | str | dict | None = mlc_dataclasses.jsonld_field(
-        default=None,
-        description="Temporal cadence of the dataset.",
-        input_types=[QuantitativeValue, SDO.Text, dict],
-        url=constants.ML_COMMONS_GEO_TEMPORAL_RESOLUTION,
+    temporal_resolution: QuantitativeValue | str | dict | None = (
+        mlc_dataclasses.jsonld_field(
+            default=None,
+            description="Temporal cadence of the dataset.",
+            input_types=[QuantitativeValue, SDO.Text, dict],
+            url=constants.ML_COMMONS_GEO_TEMPORAL_RESOLUTION,
+        )
     )
-    multi_wavelength_configuration: MultiWavelengthConfiguration | str | dict | None = mlc_dataclasses.jsonld_field(
-        default=None,
-        description="Composite property for multi-wavelength config.",
-        input_types=[MultiWavelengthConfiguration, SDO.Text, dict],
-        url=constants.ML_COMMONS_GEO_MULTI_WAVELENGTH_CONFIGURATION,
+    multi_wavelength_configuration: MultiWavelengthConfiguration | str | dict | None = (
+        mlc_dataclasses.jsonld_field(
+            default=None,
+            description="Composite property for multi-wavelength config.",
+            input_types=[MultiWavelengthConfiguration, SDO.Text, dict],
+            url=constants.ML_COMMONS_GEO_MULTI_WAVELENGTH_CONFIGURATION,
+        )
     )
-    solar_instrument_characteristics: SolarInstrumentCharacteristics | str | dict | None = mlc_dataclasses.jsonld_field(
+    solar_instrument_characteristics: (
+        SolarInstrumentCharacteristics | str | dict | None
+    ) = mlc_dataclasses.jsonld_field(
         default=None,
         description="Composite property for solar instrument characteristics.",
         input_types=[SolarInstrumentCharacteristics, SDO.Text, dict],
@@ -320,13 +332,15 @@ class Metadata(Node):
         input_types=[SDO.Text],
         url=constants.ML_COMMONS_RAI_DATA_COLLECTION_RAW_DATA,
     )
-    data_collection_timeframe: list[datetime.datetime] | None = mlc_dataclasses.jsonld_field(
-        cardinality="MANY",
-        cast_fn=cast_dates,
-        default=None,
-        input_types=[SDO.Date, SDO.DateTime],
-        to_jsonld=_dates_to_jsonld,
-        url=constants.ML_COMMONS_RAI_DATA_COLLECTION_TIME_FRAME,
+    data_collection_timeframe: list[datetime.datetime] | None = (
+        mlc_dataclasses.jsonld_field(
+            cardinality="MANY",
+            cast_fn=cast_dates,
+            default=None,
+            input_types=[SDO.Date, SDO.DateTime],
+            to_jsonld=_dates_to_jsonld,
+            url=constants.ML_COMMONS_RAI_DATA_COLLECTION_TIME_FRAME,
+        )
     )
     data_imputation_protocol: str | None = mlc_dataclasses.jsonld_field(
         cardinality="ONE",

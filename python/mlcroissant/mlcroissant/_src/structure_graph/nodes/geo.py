@@ -2,9 +2,11 @@
 
 from rdflib.namespace import SDO
 
-from mlcroissant._src.core import dataclasses as mlc_dataclasses
 from mlcroissant._src.core import constants
+from mlcroissant._src.core import dataclasses as mlc_dataclasses
 from mlcroissant._src.structure_graph.base_node import Node
+
+
 @mlc_dataclasses.dataclass
 class QuantitativeValue(Node):
     """Represents schema.org/QuantitativeValue."""
@@ -23,6 +25,7 @@ class QuantitativeValue(Node):
         input_types=[SDO.Text],
         url=constants.SCHEMA_ORG_UNIT_TEXT,
     )
+
 
 @mlc_dataclasses.dataclass
 class BandConfiguration(Node):
@@ -43,6 +46,7 @@ class BandConfiguration(Node):
         input_types=[SDO.Text],
         url=constants.ML_COMMONS_GEO_BAND_NAMES_LIST,
     )
+
 
 @mlc_dataclasses.dataclass
 class SpectralBand(Node):
@@ -70,6 +74,7 @@ class SpectralBand(Node):
         url=constants.ML_COMMONS_GEO_BANDWIDTH,
     )
 
+
 @mlc_dataclasses.dataclass
 class MultiWavelengthConfiguration(Node):
     """Represents geocr:MultiWavelengthConfiguration."""
@@ -83,6 +88,7 @@ class MultiWavelengthConfiguration(Node):
         input_types=[SDO.Text],
         url=constants.ML_COMMONS_GEO_CHANNEL_LIST,
     )
+
 
 @mlc_dataclasses.dataclass
 class SolarInstrumentCharacteristics(Node):
